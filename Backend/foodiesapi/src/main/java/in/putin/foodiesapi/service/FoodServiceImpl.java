@@ -45,7 +45,7 @@ public class FoodServiceImpl implements FoodService{
         
 
        }catch(IOException ex){
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"An error occured while uploading the file");
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"An error Occured while uploading the file");
 
        }
 
