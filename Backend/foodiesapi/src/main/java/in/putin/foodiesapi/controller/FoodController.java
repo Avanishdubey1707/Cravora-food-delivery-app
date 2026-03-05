@@ -1,0 +1,46 @@
+package in.putin.foodiesapi.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import in.putin.foodiesapi.io.FoodRequest;
+import in.putin.foodiesapi.io.FoodResponse;
+import in.putin.foodiesapi.service.FoodService;
+import lombok.AllArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+import org.springframework.http.HttpStatus;
+
+import org.springframework.web.bind.annotation.PostMapping;
+
+import org.springframework.web.bind.annotation.RequestPart;
+
+
+@RestController
+@RequestMapping("/api/foods")
+@AllArgsConstructor
+public class FoodController {
+
+
+    private final FoodService foodService;
+
+    @PostMapping
+    public FoodResponse addFood(@RequestPart("food") String foodString, @RequestPart("file")MultipartFile file){
+        ObjectMapper objectMapper = new ObjectMapper();
+        FoodRequest request = null;
+
+        try{
+            request = objectMapper.readValue(foodString,FoodRequest.class);
+        }catch(JsonProcessingException ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,  "Invalid JSON format");
+        }
+        FoodResponse response= foodService.addFood(request,file);
+        return response;
+
+    }
+
+}

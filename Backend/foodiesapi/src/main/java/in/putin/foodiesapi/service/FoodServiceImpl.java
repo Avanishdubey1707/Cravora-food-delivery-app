@@ -3,6 +3,7 @@ package in.putin.foodiesapi.service;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,17 +14,19 @@ import in.putin.foodiesapi.entity.FoodEntity;
 import in.putin.foodiesapi.io.FoodRequest;
 import in.putin.foodiesapi.io.FoodResponse;
 import in.putin.foodiesapi.repository.FoodRepository;
-import lombok.AllArgsConstructor;
+
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 @Service
-@AllArgsConstructor
-public class FoodServiceImpl implements FoodService{
 
-    private final S3Client s3Client;
-    private final FoodRepository foodRepository;
+public class FoodServiceImpl implements FoodService{
+    
+    @Autowired
+    private  S3Client s3Client;
+    @Autowired
+    private  FoodRepository foodRepository;
 
 
     @Value("${aws.s3.bucketname}")
