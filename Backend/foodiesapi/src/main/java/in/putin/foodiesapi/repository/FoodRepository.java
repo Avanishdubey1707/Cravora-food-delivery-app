@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import in.putin.foodiesapi.entity.FoodEntity;
 @Repository
-public interface FoodRespository extends MongoRepository<FoodEntity,String> {
+public interface FoodRepository extends MongoRepository<FoodEntity,String> {
 
 }

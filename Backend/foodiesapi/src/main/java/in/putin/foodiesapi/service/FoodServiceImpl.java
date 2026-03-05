@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import in.putin.foodiesapi.entity.FoodEntity;
+import in.putin.foodiesapi.io.FoodRequest;
+import in.putin.foodiesapi.io.FoodResponse;
+import in.putin.foodiesapi.repository.FoodRepository;
 import lombok.AllArgsConstructor;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -19,6 +23,8 @@ import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 public class FoodServiceImpl implements FoodService{
 
     private final S3Client s3Client;
+    private final FoodRepository foodRepository;
+
 
     @Value("${aws.s3.bucketname}")
     private String bucketName;
@@ -50,6 +56,35 @@ public class FoodServiceImpl implements FoodService{
        }
 
 
+    }
+    @Override
+    public FoodResponse addFood(FoodRequest request,MultipartFile file){
+        FoodEntity newFoodEntity=convertToEntity(request);
+        String imageUrl=uploadFile(file);
+        newFoodEntity.setImageUrl(imageUrl);
+        newFoodEntity=foodRepository.save(newFoodEntity);
+        return convertToResponse(newFoodEntity);
+    }
+        
+    private FoodEntity convertToEntity(FoodRequest request){
+       return FoodEntity.builder()
+            .name(request.getName())
+            .description(request.getDescription())
+            .category(request.getCategory())
+            .price(request.getPrice())
+            .build();
+
+    }
+
+    private FoodResponse convertToResponse(FoodEntity entity){
+        return FoodResponse.builder()
+               .id(entity.getId())
+               .name(entity.getName())
+               .description(entity.getDescription())
+               .category(entity.getCategory())
+               .price(entity.getPrice())
+               .imageUrl(entity.getImageUrl())
+               .build();
     }
 
 
