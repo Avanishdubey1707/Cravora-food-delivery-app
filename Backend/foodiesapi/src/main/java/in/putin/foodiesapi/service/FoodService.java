@@ -15,5 +15,7 @@ public interface FoodService {
 
     List<FoodResponse> readFoods();
 
+    FoodResponse readFood(String id);
+
 
 }
