@@ -1,7 +1,10 @@
 package in.putin.foodiesapi.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
+
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,6 +70,12 @@ public class FoodServiceImpl implements FoodService{
         newFoodEntity.setImageUrl(imageUrl);
         newFoodEntity=foodRepository.save(newFoodEntity);
         return convertToResponse(newFoodEntity);
+    }
+
+    @Override
+    public List<FoodResponse> readFoods(){
+        List<FoodEntity> databaseEntries=foodRepository.findAll();
+        return databaseEntries.stream().map(object -> convertToResponse(object)).collect(Collectors.toList());
     }
         
     private FoodEntity convertToEntity(FoodRequest request){

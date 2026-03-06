@@ -12,9 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestPart;
@@ -41,6 +42,10 @@ public class FoodController {
         FoodResponse response= foodService.addFood(request,file);
         return response;
 
+    }
+    @GetMapping
+    public List<FoodResponse> readFoods(){
+        return foodService.readFoods();
     }
 
 }

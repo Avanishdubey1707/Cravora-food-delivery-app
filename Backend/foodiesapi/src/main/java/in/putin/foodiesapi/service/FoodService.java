@@ -1,5 +1,7 @@
 package in.putin.foodiesapi.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import in.putin.foodiesapi.io.FoodRequest;
@@ -10,6 +12,8 @@ public interface FoodService {
     String uploadFile(MultipartFile file);
 
     FoodResponse addFood(FoodRequest request,MultipartFile file);
+
+    List<FoodResponse> readFoods();
 
 
 }
