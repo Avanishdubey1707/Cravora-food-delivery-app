@@ -41,7 +41,7 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
   }
   #page-content-wrapper {
     min-width: 0;
-    width: 100%;
+    width: 102%;
   }
   body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
     margin-left: -15rem;
