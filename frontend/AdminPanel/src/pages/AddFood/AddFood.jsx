@@ -1,9 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { assets } from '../../assets/assets';
 
 
 const AddFood = () => {
   const [image,setImage] = useState(false);
+  const [data, setData] = useState({
+       name:'',
+       description:'',
+       price:'',
+       category:''
+    
+  });
+
+  const onChangeHandler = (event) => {
+    const name = event.target.name;
+    const value=event.target.value;
+    setData(data => ({...data,[name]:value}));
+  }
+
+
+  
 
   return (
     <div className="mx-2 mt-2">
@@ -20,16 +36,16 @@ const AddFood = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="name" className="form-label">Name</label>
-                <input type="text" className="form-control" id="name" required name='name' />
+                <input type="text" className="form-control" id="name" required name='name' onChange={onChangeHandler} value={data.name} />
               </div>
               <div className="mb-3">
                 <label htmlFor="description" className="form-label">Description</label>
-                <textarea className="form-control" id="description" rows="5" required name='description' ></textarea>
+                <textarea className="form-control" id="description" rows="5" required name='description' onChange={onChangeHandler} value={data.description} ></textarea>
 
               </div>
               <div className="mb-3">
                 <label htmlFor="category" className="form-label">Category</label>
-                <select name="category" className='form-control'>
+                <select name="category" className='form-control' onChange={onChangeHandler} value={data.category}>
                   <option value="Cake" >Cake</option>
                   <option value="Ice Cream" >Ice Cream</option>
                   <option value="Pizza" >Pizza</option>
@@ -41,7 +57,7 @@ const AddFood = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="price" className="form-label">Price</label>
-                <input type="number" name="price" className="form-control" id="price" />
+                <input type="number" name="price" className="form-control" id="price" onChange={onChangeHandler} value={data.price} />
               </div>
               <button type="submit" className='btn btn-primary'>Save</button>
             </form>
