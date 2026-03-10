@@ -2,30 +2,37 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './ListFood.css';
+import { deleteFood, getFoodList } from '../../services/foodService';
 
 const ListFood = () => {
   const [list , setList] = useState([]);
   const fetchList= async ()=>{
-    const response = await axios.get('http://localhost:8080/api/foods');
-    console.log(response.data);
-    if(response.status===200){
-      setList(response.data);
-    }else{
-      toast.error('Error while reading the foods.');
+    try {
+      const data = await getFoodList();
+      setList(data);
+    } catch (error) {
+      toast.error('Error while reading the foods');
       
     }
-  }
+  
+    }
+  
 
   const removeFood = async (foodId) => {
-    const response=await axios.delete('http://localhost:8080/api/foods/'+foodId);
-    await fetchList();
-    if(response.status===204){
-      toast.success('Food removed.');
-
-    }else{
-      toast.error('Error occured while removing the food.');
+      try {
+        const success = await deleteFood(foodId);
+        if(success){
+          toast.success('Food removed.');
+          await fetchList();
+        }else{
+          toast.error('Error occure while removing the food.');
+        }
+      } catch (error) {
+         toast.error('Error occure while removing the food.');
+        
+      }
     }
-  }
+  
   useEffect(()=> {
     fetchList();
   }, []);
