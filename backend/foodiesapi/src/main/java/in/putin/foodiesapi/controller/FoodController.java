@@ -1,5 +1,6 @@
 package in.putin.foodiesapi.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RestController
 @RequestMapping("/api/foods")
 @AllArgsConstructor
+@CrossOrigin("*")
 public class FoodController {
 
 

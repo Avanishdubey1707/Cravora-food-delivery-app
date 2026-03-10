@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { assets } from '../../assets/assets';
+import axios from 'axios';
 
 
 const AddFood = () => {
@@ -8,7 +9,7 @@ const AddFood = () => {
        name:'',
        description:'',
        price:'',
-       category:''
+       category:'Cake'
     
   });
 
@@ -16,6 +17,31 @@ const AddFood = () => {
     const name = event.target.name;
     const value=event.target.value;
     setData(data => ({...data,[name]:value}));
+  }
+
+  const onSubmitHandler = async (event) =>{
+    event.preventDefault();
+    if(!image){
+      alert('Please select an image');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('food',JSON.stringify(data));
+    formData.append('file',image);
+
+    try{ 
+     const response= await axios.post('http://localhost:8080/api/foods',formData,{headers:{"Content-Type":"multipart/form-data"}});
+      if(response.status===200){
+        alert('Food added successfully.');
+        setData({name:'',description:'',category:'Cake',price:''});
+        setImage(null);
+      }
+
+    }catch(error){
+      console.log('Error',error);
+      alert('Error Adding food ');
+
+    }
   }
 
 
@@ -27,12 +53,12 @@ const AddFood = () => {
         <div className=" card col-md-4">
           <div className="card-body">
             <h2 className="mb-4">Add Food</h2>
-            <form>
+            <form onSubmit={onSubmitHandler}>
                <div className="mb-3">
                 <label htmlFor="image" className="form-label">
                   <img src={image ? URL.createObjectURL(image): assets.upload} alt="" width={98} />
                 </label>
-                <input type="file" className="form-control" id="image" required hidden onChange={(e) => setImage(e.target.files[0])} />
+                <input type="file" className="form-control" id="image"  hidden onChange={(e) => setImage(e.target.files[0])} />
               </div>
               <div className="mb-3">
                 <label htmlFor="name" className="form-label">Name</label>
