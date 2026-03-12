@@ -12,6 +12,10 @@ export const StoreContextProvider = (props) =>{
     const contextValue={
         foodList
     };
+     const fetchFoodList = async () => {
+        const response = await axios.get("http://localhost:8080/api/foods");
+        return response.data;
+    };
 
     useEffect(() => {
         async function loadData() {
