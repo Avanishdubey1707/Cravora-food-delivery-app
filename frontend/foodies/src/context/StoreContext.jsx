@@ -1,11 +1,28 @@
+import { useEffect } from "react";
+import { useState } from "react";
 import { createContext } from "react";
+import axios from "axios";
 
 export const StoreContext = createContext(null);
 
 export const StoreContextProvider = (props) =>{
-    const contextValue={
 
+    const [foodList, setFoodList] = useState([]);
+   
+    const contextValue={
+        foodList
     };
+
+    useEffect(() => {
+        async function loadData() {
+           const data = await fetchFoodList();
+           setFoodList(data);
+            
+        }
+        loadData();
+    },[]);
+
+
     return (
         <StoreContext.Provider value={contextValue}>
             {props.children}
