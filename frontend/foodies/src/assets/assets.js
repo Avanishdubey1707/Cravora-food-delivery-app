@@ -25,7 +25,7 @@ export const categories = [
         icon:cake
     },
      {
-        category:'Ice cream',
+        category:'Ice Cream',
         icon:icecream
     },
      {
