@@ -40,7 +40,7 @@ const Menubar = () => {
                             </div>
                         </Link>
                         <button className='btn btn-outline-primary' onClick={()=> navigate('/login')}>Login</button>
-                        <button className='btn btn-outline-success'>Register</button>
+                        <button className='btn btn-outline-success'onClick={()=> navigate('/register')}>Register</button>
                     </div>
 
                 </div>
