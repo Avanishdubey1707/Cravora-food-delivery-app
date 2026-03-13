@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { assets } from '../../assets/assets';
+import { StoreContext } from '../../context/StoreContext';
 
 const PlaceOrder = () => {
+    const {foodList,quantities,setQuantities}=useContext(StoreContext);
+    // Cart items
+    const cartItems = foodList.filter((food) => quantities[food.id]>0);
+     
+    // calculations
+    const subtotal = cartItems.reduce(
+        (acc, food) => acc + food.price * quantities[food.id],0
+    ) ;
+    const shipping = subtotal === 0 ? 0.0 :10;
+    const tax = subtotal * 0.1;
+    const total = subtotal + shipping + tax;
     return (
         <div className="container mt-2">
 
             <main>
                 <div className="py-3 text-center">
-                    <img className="d-block mx-auto mb-4" src={assets.logo} alt="" width="98" height="98"/>
+                    <img className="d-block mx-auto" src={assets.logo} alt="" width="98" height="98"/>
                         
                        
                 </div>
@@ -15,34 +27,42 @@ const PlaceOrder = () => {
                     <div className="col-md-5 col-lg-4 order-md-last">
                         <h4 className="d-flex justify-content-between align-items-center mb-3">
                             <span className="text-primary">Your cart</span>
-                            <span className="badge bg-primary rounded-pill">3</span>
+                            <span className="badge bg-primary rounded-pill">{cartItems.length}</span>
                         </h4>
                         <ul className="list-group mb-3">
-                            <li className="list-group-item d-flex justify-content-between lh-sm">
+                            {cartItems.map(item =>(
+                                <li className="list-group-item d-flex justify-content-between lh-sm">
                                 <div>
-                                    <h6 className="my-0">Product name</h6>
-                                    <small className="text-muted">Brief description</small>
+                                    <h6 className="my-0">{item.name}</h6>
+                                    <small className="text-muted">Qty : {quantities[item.id]}</small>
                                 </div>
-                                <span className="text-muted">$12</span>
+                                <span className="text-body-secondary">&#8377;{item.price * quantities[item.id]}</span>
                             </li>
-                            <li className="list-group-item d-flex justify-content-between lh-sm">
+                            ))}
+                            <li className="list-group-item d-flex justify-content-between">
                                 <div>
-                                    <h6 className="my-0">Second product</h6>
-                                    <small className="text-muted">Brief description</small>
+                                    
+                                    <span>
+                                        Shipping
+                                    </span>
                                 </div>
-                                <span className="text-muted">$8</span>
+                                <span className="text-body-secondary">
+                                    &#8377;{subtotal === 0 ? 0.0 : shipping.toFixed(2)}
+                                </span>
                             </li>
-                            <li className="list-group-item d-flex justify-content-between lh-sm">
+                            <li className="list-group-item d-flex justify-content-between">
                                 <div>
-                                    <h6 className="my-0">Third item</h6>
-                                    <small className="text-muted">Brief description</small>
+                                   
+                                    <span>Tax (10%)</span>
                                 </div>
-                                <span className="text-muted">$5</span>
+                                <span className="text-body-secondary">
+                                    &#8377;{tax.toFixed(2)}
+                                </span>
                             </li>
 
                             <li className="list-group-item d-flex justify-content-between">
                                 <span>Total (INR)</span>
-                                <strong>&#8377;20</strong>
+                                <strong>&#8377;{total.toFixed(2)}</strong>
                             </li>
                         </ul>
 
@@ -54,13 +74,13 @@ const PlaceOrder = () => {
                             <div className="row g-3">
                                 <div className="col-sm-6">
                                     <label htmlFor="firstName" className="form-label">First name</label>
-                                    <input type="text" className="form-control" id="firstName" placeholder="" value="" required />
+                                    <input type="text" className="form-control" id="firstName" placeholder="Ben" value="" required />
 
                                 </div>
 
                                 <div className="col-sm-6">
                                     <label htmlFor="lastName" className="form-label">Last name</label>
-                                    <input type="text" className="form-control" id="lastName" placeholder="" value="" required />
+                                    <input type="text" className="form-control" id="lastName" placeholder="Putin" value="" required />
 
                                 </div>
 
