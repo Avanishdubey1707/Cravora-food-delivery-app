@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import FoodDetails from './pages/FoodDetails/FoodDetails';
 import Cart from './pages/Cart/Cart';
 import PlaceOrder from './pages/PlaceOrder/PlaceOrder';
+import Login from './components/Login/Login';
 
 
 
@@ -21,6 +22,7 @@ const App = () => {
         <Route path = '/food/:id' element={<FoodDetails />} />
         <Route path = '/cart' element={<Cart />} />
         <Route path = '/order' element={<PlaceOrder />} />
+        <Route path = '/login' element={<Login />} />
       </Routes>
     </div>
   )
