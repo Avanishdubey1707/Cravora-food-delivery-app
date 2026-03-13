@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Login.css';
 
 const Login = () => {
   return (
-    <div className="container login-container">
+    <div className="login-container">
     <div className="row">
       <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div className="card border-0 shadow rounded-3 my-5">
