@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import './Cart.css'
 import { StoreContext } from '../../context/StoreContext';
+import { Link } from 'react-router-dom';
 
 const Cart = () => {
     const {foodList,increaseQty,decreaseQty,quantities} = useContext(StoreContext);
@@ -74,9 +75,9 @@ const Cart = () => {
                   }
 
                     <div className="text-start mb-4">
-                        <a href="#" className="btn btn-outline-primary">
+                        <Link to={"/"} className="btn btn-outline-primary">
                             <i className="bi bi-arrow-left me-2"></i>Continue Shopping
-                        </a>
+                        </Link>
                     </div>
                 </div>
                 <div className="col-lg-4">
