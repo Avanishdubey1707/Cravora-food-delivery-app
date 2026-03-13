@@ -1,5 +1,6 @@
 package in.putin.foodiesapi.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import in.putin.foodiesapi.entity.UserEntity;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     
 
     @Override
@@ -27,7 +29,7 @@ public class UserServiceImpl implements UserService{
     private UserEntity convertToEntity(UserRequest request){
         return UserEntity.builder()
                .email(request.getEmail())
-               .password(request.getPassword())
+               .password(passwordEncoder.encode(request.getPassword()))
                .name(request.getName())
                .build();
     }
