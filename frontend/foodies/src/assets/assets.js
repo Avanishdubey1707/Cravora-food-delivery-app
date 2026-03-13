@@ -40,8 +40,8 @@ export const categories = [
         category:'Salad',
         icon:salad
     },
-     {
-        category:'Gulabjamun',
+    {
+        category:'Gulab jamun',
         icon:gulabjamun
     }
 ];
