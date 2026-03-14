@@ -10,9 +10,13 @@ import biryani from "./biryani.png";
 import gulabjamun from './gulabjamun.png'
 
 
+import profile from './profile.png';
+
+
 export const assets={
     logo,
-    cart
+    cart,
+    profile
 }
 
 export const categories = [

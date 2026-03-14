@@ -67,7 +67,7 @@ const Menubar = () => {
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                 >
-                                    <img src="" alt="" width={32} height={32} className="rounded-circle" />
+                                    <img src={assets.profile} alt="" width={32} height={32} className="rounded-circle" />
                                 </a>
 
                                 <ul className="dropdown-menu text-small ">
