@@ -12,12 +12,24 @@ export const StoreContextProvider = (props) =>{
     const [token ,setToken] = useState("");
 
     
-    const increaseQty = (foodId) => {
+    const increaseQty = async (foodId) => {
         setQuantities((prev) => ({...prev, [foodId]: (prev[foodId] || 0) +1}));
-    }
+
+        await axios.post(
+            "http://localhost:8080/api/cart",
+            {foodId},
+            {headers:{Authorization:`Bearer ${token}`}}
+        );
+
+
+    };
     const decreaseQty = (foodId) => {
         setQuantities((prev) => ({...prev, [foodId]: prev[foodId] >0 ? prev[foodId]-1:0}));
-    }
+
+        axios.post('http://localhost:8080/api/cart/remove',{foodId},
+            {headers:{Authorization: `Bearer ${token}`}}
+        );
+    };
 
     const removeFromCart = (foodId) => {
         setQuantities((prevQuantities)=> {
@@ -46,6 +58,9 @@ export const StoreContextProvider = (props) =>{
         async function loadData() {
            const data = await fetchFoodList();
            setFoodList(data);
+           if(localStorage.getItem("token")){
+            setToken(localStorage.getItem("token"));
+           }
             
         }
         loadData();
