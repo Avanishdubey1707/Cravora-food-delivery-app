@@ -45,5 +45,10 @@ public class CartServiceImpl implements CartService {
                   .orElse(new CartEntity(null,loggedInUserId,new HashMap<>()));
         return convertToResponse(entity);
     }
+    @Override
+    public void clearCart() {
+        String loggedInUserId = userService.findByUserId();
+        cartRepository.deleteByUserId(loggedInUserId);
+    }
 
 }
