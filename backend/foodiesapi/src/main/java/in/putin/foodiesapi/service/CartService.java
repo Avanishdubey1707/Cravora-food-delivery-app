@@ -1,6 +1,11 @@
 package in.putin.foodiesapi.service;
 
+import in.putin.foodiesapi.io.CartRequest;
+import in.putin.foodiesapi.io.CartResponse;
+
 public interface CartService {
    
-    void addToCart(String foodId);
+    CartResponse addToCart(CartRequest request);
+
+    CartResponse  getCart();
 }
