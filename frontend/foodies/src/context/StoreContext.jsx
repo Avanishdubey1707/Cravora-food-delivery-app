@@ -39,6 +39,11 @@ export const StoreContextProvider = (props) =>{
         });
     };
 
+    const loadCartData= async (token) => {
+        const response = await axios.get("http://localhost:8080/api/cart", {headers:{Authorization: `Bearer ${token}`}});
+        setQuantities(response.data.items);
+    };
+
    
     const contextValue={
         foodList,
@@ -47,7 +52,9 @@ export const StoreContextProvider = (props) =>{
         quantities,
         removeFromCart,
         token,
-        setToken
+        setToken,
+        setQuantities,
+        loadCartData
     };
      const fetchFoodList = async () => {
         const response = await axios.get("http://localhost:8080/api/foods");
@@ -60,6 +67,7 @@ export const StoreContextProvider = (props) =>{
            setFoodList(data);
            if(localStorage.getItem("token")){
             setToken(localStorage.getItem("token"));
+            await loadCartData(localStorage.getItem("token"));
            }
             
         }
