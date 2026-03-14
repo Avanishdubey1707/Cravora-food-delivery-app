@@ -13,3 +13,15 @@ export const registerUser = async (data) =>{
         throw error;
     }
 }
+
+export const login = async (data) =>{
+    try{
+        const response = await axios.post(
+            API_URL+"/login",
+            data
+        );
+        return response
+    }catch(error){
+        throw error;
+    }
+}
