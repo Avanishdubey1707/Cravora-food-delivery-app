@@ -1,5 +1,7 @@
 package in.putin.foodiesapi.service;
 
+import java.util.Map;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,7 @@ import com.razorpay.RazorpayException;
 import in.putin.foodiesapi.entity.OrderEntity;
 import in.putin.foodiesapi.io.OrderRequest;
 import in.putin.foodiesapi.io.OrderResponse;
+import in.putin.foodiesapi.repository.CartRepository;
 import in.putin.foodiesapi.repository.OrderRepository;
 
 
@@ -22,6 +25,8 @@ public class OrderServiceImpl implements OrderService {
     private  OrderRepository orderRepository;
     @Autowired
     private  UserService userService;
+    @Autowired
+    private CartRepository cartRepository;
 
     @Value("${razorpay_key}")
     private String RAZORPAY_KEY;
@@ -82,6 +87,20 @@ public class OrderServiceImpl implements OrderService {
                
 
 
+    }
+
+    @Override
+    public void verifyPayment(Map<String, String> paymentData, String status) {
+       String razorpayOrderId = paymentData.get("razorpay_order_id");
+       OrderEntity existingOrder = orderRepository.findByRazorpayOrderId(razorpayOrderId)
+                .orElseThrow(()-> new RuntimeException("Order not found."));
+        existingOrder.setPaymentStatus(status);
+        existingOrder.setRazorpaySignature(paymentData.get("razorpay_signature"));
+        existingOrder.setRazorpayPaymentId(paymentData.get("razorpay_payment_id"));
+        orderRepository.save(existingOrder);
+        if("paid".equalsIgnoreCase(status)){
+            cartRepository.deleteByUserId(existingOrder.getUserId());
+        }
     }
 
 }
