@@ -9,9 +9,10 @@ import in.putin.foodiesapi.io.OrderItem;
 import lombok.Builder;
 import lombok.Data;
 
-@Document
+
 @Data
 @Builder
+@Document(collection =  "orders")
 public class OrderEntity {
     @Id
     private String id;
