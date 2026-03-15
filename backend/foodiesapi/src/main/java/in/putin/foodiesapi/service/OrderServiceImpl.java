@@ -1,6 +1,7 @@
 package in.putin.foodiesapi.service;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +13,15 @@ import in.putin.foodiesapi.entity.OrderEntity;
 import in.putin.foodiesapi.io.OrderRequest;
 import in.putin.foodiesapi.io.OrderResponse;
 import in.putin.foodiesapi.repository.OrderRepository;
-import lombok.AllArgsConstructor;
+
 
 @Service
-@AllArgsConstructor
+
 public class OrderServiceImpl implements OrderService {
-  
-    private final OrderRepository orderRepository;
-    private final UserService userService;
+    @Autowired
+    private  OrderRepository orderRepository;
+    @Autowired
+    private  UserService userService;
 
     @Value("${razorpay_key}")
     private String RAZORPAY_KEY;
@@ -37,7 +39,11 @@ public class OrderServiceImpl implements OrderService {
 
         RazorpayClient razorpayClient = new RazorpayClient(RAZORPAY_KEY, RAZORPAY_SECRET);
         JSONObject orderRequest = new JSONObject();
-        orderRequest.put("amount",newOrder.getAmount());
+
+        int amount = (int)(Double.parseDouble(newOrder.getAmount()) * 100);
+
+
+        orderRequest.put("amount", amount);
         orderRequest.put("currency", "INR");
         orderRequest.put("payment_capture", 1);
 
