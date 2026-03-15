@@ -1,6 +1,9 @@
 package in.putin.foodiesapi.service;
 
+import java.util.List;
 import java.util.Map;
+
+import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
                .orderStatus(newOrder.getOrderStatus())
                .email(newOrder.getEmail())
                .phoneNumber(newOrder.getPhoneNumber())
+               .orderedItems(newOrder.getOrderedItems())
                .build();
     }
 
@@ -101,6 +105,14 @@ public class OrderServiceImpl implements OrderService {
         if("paid".equalsIgnoreCase(status)){
             cartRepository.deleteByUserId(existingOrder.getUserId());
         }
+    }
+
+    @Override
+    public List<OrderResponse> setUserOrders() {
+        String loggedInUserId = userService.findByUserId();
+        List<OrderEntity> list = orderRepository.findByUserId(loggedInUserId);
+        return list.stream().map(entity-> convertToResponse(entity)).collect(Collectors.toList());
+
     }
 
 }

@@ -1,5 +1,7 @@
 package in.putin.foodiesapi.io;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,5 +18,5 @@ public class OrderResponse {
     private String paymentStatus;
     private String razorpayOrderId;
     private String orderStatus;
-
+    private List<OrderItem> orderedItems;
 }

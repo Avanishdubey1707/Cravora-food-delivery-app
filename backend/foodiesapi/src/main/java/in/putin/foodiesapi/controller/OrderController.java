@@ -1,5 +1,6 @@
 package in.putin.foodiesapi.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,10 @@ public class OrderController {
     @GetMapping("/verify")
     public void verifyPayment(@RequestBody Map<String,String> paymentData){
         orderService.verifyPayment(paymentData, "paid");
+    }
+    @GetMapping
+    public List<OrderResponse> getOrders(){
+        return orderService.setUserOrders();
     }
 
 

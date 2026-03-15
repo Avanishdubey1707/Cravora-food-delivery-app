@@ -1,5 +1,6 @@
 package in.putin.foodiesapi.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.razorpay.RazorpayException;
@@ -14,6 +15,8 @@ public interface OrderService {
    
 
  void verifyPayment(Map<String , String> paymentData, String status);
- 
+
+
+ List<OrderResponse> setUserOrders();
 
  }
