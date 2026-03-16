@@ -49,12 +49,12 @@ const Menubar = () => {
                         {!token ? (
                             <>
                                 <button
-                                    className='btn btn-outline-primary'
+                                    className='btn btn-outline-primary btn-sm'
                                     onClick={() => navigate('/login')}>
                                     Login
                                 </button>
                                 <button
-                                    className='btn btn-outline-success'
+                                    className='btn btn-outline-success btn-sm'
                                     onClick={() => navigate('/register')}>
                                     Register
                                 </button>

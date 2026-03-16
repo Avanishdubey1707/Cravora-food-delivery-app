@@ -28,10 +28,10 @@ const App = () => {
         <Route path='/explore' element={<ExploreFood/>} />
         <Route path = '/food/:id' element={<FoodDetails />} />
         <Route path = '/cart' element={<Cart />} />
-        <Route path = '/order' element={<PlaceOrder />} />
-        <Route path = '/login' element={<Login />} />
-        <Route path = '/register' element={<Register />} />
-        <Route path = '/myorders' element={<MyOrders />} />
+        <Route path = '/order' element={token ? <PlaceOrder /> :  <Login/>} />
+        <Route path = '/login' element={token ? <Home/> : <Login />} />
+        <Route path = '/register' element={token ? <Home/> : <Register />} />
+        <Route path = '/myorders' element={token ? <MyOrders /> : <Login/>} />
     
       </Routes>
     </div>
