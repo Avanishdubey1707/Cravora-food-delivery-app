@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
@@ -22,7 +23,6 @@ import in.putin.foodiesapi.repository.OrderRepository;
 
 
 @Service
-
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private  OrderRepository orderRepository;
@@ -114,5 +114,26 @@ public class OrderServiceImpl implements OrderService {
         return list.stream().map(entity-> convertToResponse(entity)).collect(Collectors.toList());
 
     }
+
+    @Override
+    public void removeOrder(String orderId) {
+         orderRepository.deleteById(orderId);
+        
+    }
+
+    @Override
+    public List<OrderResponse> getOrderOfAllUsers() {
+       List<OrderEntity> list= orderRepository.findAll();
+       return list.stream().map(entity -> convertToResponse(entity)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateOrderStatus(String orderId, String status) {
+      OrderEntity entity=orderRepository.findById(orderId)
+              .orElseThrow(() -> new RuntimeException("Order not found"));
+       entity.setOrderStatus(status);
+       orderRepository.save(entity);        
+    }
+   
 
 }

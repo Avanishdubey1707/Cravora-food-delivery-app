@@ -19,4 +19,10 @@ public interface OrderService {
 
  List<OrderResponse> setUserOrders();
 
+ void removeOrder(String orderId);
+
+ List<OrderResponse> getOrderOfAllUsers();  
+
+void updateOrderStatus(String orderId,String status);
+
  }
