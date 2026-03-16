@@ -13,14 +13,28 @@ export const StoreContextProvider = (props) =>{
     const [token ,setToken] = useState("");
 
     
-    const increaseQty = async (foodId) => {
-        setQuantities((prev) => ({...prev, [foodId]: (prev[foodId] || 0) +1}));
-        await addToCart(foodId,token);      
-    };
-    const decreaseQty = async (foodId) => {
-        setQuantities((prev) => ({...prev, [foodId]: prev[foodId] >0 ? prev[foodId]-1:0}));
+   const increaseQty = async (foodId) => {
+
+    setQuantities((prev)=>({
+        ...prev,
+        [foodId]:(prev[foodId] || 0)+1
+    }));
+
+    if(token){
+        await addToCart(foodId,token);
+    }
+};
+   const decreaseQty = async (foodId) => {
+
+    setQuantities((prev)=>({
+        ...prev,
+        [foodId]: prev[foodId] > 0 ? prev[foodId]-1 : 0
+    }));
+
+    if(token){
         await removeQtyFromCart(foodId,token);
-    };
+    }
+};
 
     const removeFromCart = (foodId) => {
         setQuantities((prevQuantities)=> {
@@ -32,7 +46,7 @@ export const StoreContextProvider = (props) =>{
 
     const loadCartData= async (token) => {
        const items=await getCartData(token);
-       setQuantities(items);
+       setQuantities(items || {});
     };
 
    
@@ -53,17 +67,23 @@ export const StoreContextProvider = (props) =>{
     };
 
     useEffect(() => {
-        async function loadData() {
-           const data = await fetchFoodList();
-           setFoodList(data);
-           if(localStorage.getItem("token")){
-            setToken(localStorage.getItem("token"));
-            await loadCartData(localStorage.getItem("token"));
-           }
-            
+    async function loadData() {
+
+        const data = await fetchFoodList();
+        setFoodList(data);
+
+        const storedToken = localStorage.getItem("token");
+
+        if(storedToken){
+            setToken(storedToken);
+            await loadCartData(storedToken);
         }
-        loadData();
-    },[]);
+
+    }
+
+    loadData();
+
+},[]);
 
 
     return (
