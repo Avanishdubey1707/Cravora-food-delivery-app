@@ -2,9 +2,17 @@ import React, { useContext, useState } from 'react';
 import { assets } from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 import { calculateCartTotals } from '../../Util/cartUtils';
+import axios from 'axios';
+import { toast } from "react-toastify";
+import { RAZORPAY_KEY } from '../../Util/constants';
+import { useNavigate } from "react-router-dom";
+
+
 
 const PlaceOrder = () => {
-    const { foodList, quantities, setQuantities } = useContext(StoreContext);
+    const navigate = useNavigate();
+    const { foodList, quantities, setQuantities,token } = useContext(StoreContext);
+    
 
     const [data, setData] = useState({
         firstName: '',
@@ -23,10 +31,116 @@ const PlaceOrder = () => {
         const value = event.target.value;
         setData(data => ({ ...data, [name]: value }));
     }
-    const onSubmitHandler = (event) => {
+    const onSubmitHandler = async (event) => {
         event.preventDefault();
-        console.log(data);
-    }
+        const orderData={
+            userAddress:`${data.firstName} ${data.lastName} , ${data.address} , ${data.city} , ${data.state},${data.zip}`,
+            phoneNumber: data.phoneNumber,
+            email: data.email,
+            orderedItems: cartItems.map(item => ({
+                foodId: item.id,
+                quantity: quantities[item.id],
+                price: item.price * quantities[item.id],
+                category: item.category,
+                imageUrl: item.imageUrl,
+                description: item.description,
+                name: item.name
+
+            })),
+            amount: total,
+            orderStatus: "preparing"
+        };
+        try {
+            const response = await axios.post('http://localhost:8080/api/orders/create',orderData, {headers: {'Authorization':`Bearer ${token}`}});
+            if(response.status  === 200 && response.data.razorpayOrderId){
+                initiateRazorpayPayment(response.data);
+
+            }else{
+                
+                toast.error("Unable to place order. please try again.");
+            }
+        } catch (error) {
+               console.log("ORDER ERROR:", error);
+    console.log("SERVER RESPONSE:", error?.response?.data);
+    console.log("STATUS:", error?.response?.status);
+            toast.error("Unable to place order. please try again.");
+        }
+    };
+
+    const initiateRazorpayPayment = (order) => {
+        const options = {
+            key:RAZORPAY_KEY,
+            amount : order.amount * 100,
+            currency : "INR",
+            name: "Food Land",
+            description: "Food order payment",
+            order_id: order.razorpayOrderId,
+            handler: async function(razorpayResponse) {
+                await verifyPayment(razorpayResponse);
+                           
+            },
+            prefill: {
+                name: `${data.firstName} ${data.lastName}`,
+                email :data.email,
+                contact: data.phoneNumber
+            },
+
+            theme: {color:"#3399cc"},
+            modal: {
+                ondismiss: async function () {
+                    toast.error("Paymen cancelled.");
+                    await deleteOrder(order.orderId);
+                    
+                },
+            },
+
+             
+        };
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+    };
+
+    const verifyPayment = async (razorpayResponse) => {
+        const paymentData = {
+            razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+            razorpay_order_id: razorpayResponse.razorpay_order_id,
+            razorpay_signature: razorpayResponse.razorpay_signature
+        };
+
+       try {
+            const response = await axios.post('http://localhost:8080/api/orders/verify',paymentData, {headers:{'Authorization':`Bearer ${token}`}});
+        if(response.status === 200) {
+            toast.success('Payment successful.');
+            await clearCart();
+            navigate('/myorders');
+        }else {
+            toast.error('Payment failed . please try again');
+            navigate('/');
+        }
+       } catch (error) {
+            toast.error('Payment failed . please try again');
+            
+        
+       }
+    };
+
+    const deleteOrder = async (orderId) => {
+        try {
+            await axios.delete("http://localhost:8080/api/orders/" + orderId, {headers:{'Authorization':`Bearer ${token}`}});           
+        } catch (error) {
+            toast.error("Something went wrong . Contact Support.");
+        }
+    };
+
+    const clearCart = async () => {
+        try {
+            await axios.delete("http://localhost:8080/api/cart" , {headers:{'Authorization':`Bearer ${token}`}});
+            setQuantities({});
+        } catch (error) {
+            toast.error("Error while clearing the cart.");
+        }
+    };
+
     // Cart items
     const cartItems = foodList.filter((food) => quantities[food.id] > 0);
 
