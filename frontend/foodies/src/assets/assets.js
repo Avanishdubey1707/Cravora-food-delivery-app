@@ -8,6 +8,7 @@ import rolls from './rolls.png';
 import salad from './salad.png';
 import biryani from "./biryani.png";
 import gulabjamun from './gulabjamun.png'
+import delivery from './delivery.png'
 
 
 import profile from './profile.png';
@@ -16,7 +17,8 @@ import profile from './profile.png';
 export const assets={
     logo,
     cart,
-    profile
+    profile,
+    delivery
 }
 
 export const categories = [
