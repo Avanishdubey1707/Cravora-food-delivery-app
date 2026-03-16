@@ -11,10 +11,13 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import { ToastContainer } from 'react-toastify';
 import MyOrders from './pages/MyOrders/MyOrders';
+import { useContext } from 'react';
+import { StoreContext } from './context/StoreContext';
 
 
 
 const App = () => {
+  const {token} = useContext(StoreContext);
   return (
     <div>
       <Menubar />
