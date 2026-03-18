@@ -310,6 +310,19 @@ const PlaceOrder = () => {
                                     >
                                         <option value="">Choose...</option>
                                         <option>Bihar</option>
+                                        <option>Uttar Pradesh</option>
+                                        <option>Madhya Pradesh</option>
+                                        <option>Arunachal Pradesh</option>
+                                        <option>Sikkim</option>
+                                        <option>Rajsthan</option>
+                                        <option>Jharkhand</option>
+                                        <option>Assam</option>
+                                        <option>Bengal</option>
+                                        <option>Punjab</option>
+                                        <option>Tamil nadu</option>
+                                        <option>Goa</option>
+                                        <option>Karnatka</option>
+                                        <option>Uttrakhand</option>
                                     </select>
 
                                 </div>
@@ -322,6 +335,26 @@ const PlaceOrder = () => {
                                         onChange={onChangeHandler}
                                         value={data.city}>
                                         <option value="">Choose...</option>
+                                        <option>patna</option>
+                                        <option>Lucknow</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
+                                        <option>Siwan</option>
                                         <option>Siwan</option>
                                     </select>
 
