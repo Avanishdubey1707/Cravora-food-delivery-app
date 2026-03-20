@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -33,19 +33,31 @@ public class SecurityConfig {
     private final AppUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http 
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(auth -> auth
 
+            // ✅ VERY IMPORTANT (fixes 403 on Render)
+            .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
 
-              .cors(Customizer.withDefaults())
-              .csrf(AbstractHttpConfigurer::disable)
-              .authorizeHttpRequests(auth -> auth.requestMatchers( "/api/register","/api/login","/api/foods/**","/api/orders/all","/api/orders/status/**").permitAll().anyRequest().authenticated())
-              .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-               .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-              return http.build();
+            .requestMatchers(
+                "/api/register",
+                "/api/login",
+                "/api/foods/**",
+                "/api/orders/all",
+                "/api/orders/status/**"
+            ).permitAll()
 
+            .anyRequest().authenticated()
+        )
+        .sessionManagement(session ->
+            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        )
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-    }
+    return http.build();
+}
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -56,18 +68,18 @@ public class SecurityConfig {
         return new CorsFilter(corsConfigurationSource());
     }
     private UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:5174"));
-        config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS","PATCH"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+    CorsConfiguration config = new CorsConfiguration();
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+    config.setAllowedOriginPatterns(List.of("*")); // ✅ IMPORTANT
+    config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS","PATCH"));
+    config.setAllowedHeaders(List.of("*"));
+    config.setAllowCredentials(true);
 
-        return source;
-      
-    }
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+
+    return source;
+}
     @Bean
     public AuthenticationManager authenticationManager(){
            DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();

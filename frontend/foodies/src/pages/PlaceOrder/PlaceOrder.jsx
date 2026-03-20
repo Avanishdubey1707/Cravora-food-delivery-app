@@ -337,25 +337,19 @@ const PlaceOrder = () => {
                                         <option value="">Choose...</option>
                                         <option>patna</option>
                                         <option>Lucknow</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
-                                        <option>Siwan</option>
+                                        <option>Bhopal</option>
+                                        <option>Ita nagar</option>
+                                        <option>Gangtok</option>
+                                        <option>Jaipur</option>
+                                        <option>Ranchi</option>
+                                        <option>Dispur</option>
+                                        <option>Kolkata</option>
+                                        <option>Chandigarh</option>
+                                        <option>Chennai</option>
+                                        <option>panji</option>
+                                        <option>Bangluru</option>
+                                        <option>Dehradun</option>
+                                       
                                     </select>
 
                                 </div>
