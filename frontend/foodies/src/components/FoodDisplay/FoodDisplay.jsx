@@ -23,7 +23,7 @@ const FoodDisplay = ({category,searchText}) => {
           ))
         ) : (
           <div className="text-center mt-4">
-            <h4>no foood found.</h4>
+            <h4>No foood found.</h4>
           </div>
         )}
       </div>
