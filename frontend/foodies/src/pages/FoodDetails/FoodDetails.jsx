@@ -46,7 +46,7 @@ const FoodDetails = () => {
                         <div className="d-flex">
                             <button className="btn btn-outline-dark flex-shrink-0" type="button" onClick={addToCart}>
                                 <i className="bi-cart-fill me-1"></i>
-                                Add to cart
+                                Add to Cart
                             </button>
                         </div>
                     </div>
