@@ -161,7 +161,7 @@ const PlaceOrder = () => {
                 <div className="row g-5">
                     <div className="col-md-5 col-lg-4 order-md-last">
                         <h4 className="d-flex justify-content-between align-items-center mb-3">
-                            <span className="text-primary">Your Cart</span>
+                            <span className="text-primary">Your cart</span>
                             <span className="badge bg-primary rounded-pill">{cartItems.length}</span>
                         </h4>
                         <ul className="list-group mb-3">
@@ -204,7 +204,7 @@ const PlaceOrder = () => {
 
                     </div>
                     <div className="col-md-7 col-lg-8">
-                        <h4 className="mb-3">Billing address</h4>
+                        <h4 className="mb-3">Billing Address</h4>
                         <form className="needs-validation" onSubmit={onSubmitHandler}>
                             <div className="row g-3">
                                 <div className="col-sm-6">
