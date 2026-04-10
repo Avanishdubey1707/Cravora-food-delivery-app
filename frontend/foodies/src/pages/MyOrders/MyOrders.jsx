@@ -3,6 +3,7 @@ import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import { assets } from '../../assets/assets';
 import './MyOrders.css'
+import { API_URL } from '../../service/authService';
 
 const MyOrders = () => {
 
@@ -10,7 +11,7 @@ const MyOrders = () => {
     const [data,setData] = useState([]);
 
     const fetchOrders  = async () => {
-        const response = await axios.get("http://localhost:8080/api/orders",{headers:{'Authorization':`Bearer ${token}`}});
+        const response = await axios.get(`${API_URL}/orders`,{headers:{'Authorization':`Bearer ${token}`}});
         setData(response.data);
     };
 

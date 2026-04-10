@@ -3,6 +3,7 @@ import { useState } from "react";
 import { createContext } from "react";
 import axios from "axios";
 import { addToCart, getCartData, removeQtyFromCart } from "../service/cartService";
+import { API_URL } from "../service/authService";
 
 export const StoreContext = createContext(null);
 
@@ -62,7 +63,7 @@ export const StoreContextProvider = (props) =>{
         loadCartData
     };
      const fetchFoodList = async () => {
-        const response = await axios.get("http://localhost:8080/api/foods");
+        const response = await axios.get(`${API_URL}/foods`);
         return response.data;
     };
 

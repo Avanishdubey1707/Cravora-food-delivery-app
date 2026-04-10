@@ -1,17 +1,18 @@
 import React, {  useEffect, useState } from 'react';
 import axios from 'axios';
 import { assets } from '../../assets/assets';
+import { API_URL } from '../../../../foodies/src/service/authService';
 
 const Orders = () => {
     const [data , setData] = useState([]);
 
     const fetchOrders= async () => {
-      const response = await axios.get("http://localhost:8080/api/orders/all");
+      const response = await axios.get(`${API_URL}/orders/all`);
       setData(response.data);
     };
 
     const updateStatus = async (event,orderId) => {
-      const response = await axios.patch(`http://localhost:8080/api/orders/status/${orderId}?status=${event.target.value}`);
+      const response = await axios.patch(`${API_URL}/orders/status/${orderId}?status=${event.target.value}`);
       if(response.status === 200){
         await fetchOrders();
       }

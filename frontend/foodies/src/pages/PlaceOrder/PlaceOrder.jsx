@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 import { RAZORPAY_KEY } from '../../Util/constants';
 import { useNavigate } from "react-router-dom";
+import { API_URL } from '../../service/authService';
 
 
 
@@ -51,7 +52,7 @@ const PlaceOrder = () => {
             orderStatus: "preparing"
         };
         try {
-            const response = await axios.post('http://localhost:8080/api/orders/create',orderData, {headers: {'Authorization':`Bearer ${token}`}});
+            const response = await axios.post(`${API_URL}/orders/create`,orderData, {headers: {'Authorization':`Bearer ${token}`}});
             if(response.status  === 200 && response.data.razorpayOrderId){
                 initiateRazorpayPayment(response.data);
 
@@ -108,7 +109,7 @@ const PlaceOrder = () => {
         };
 
        try {
-            const response = await axios.post('http://localhost:8080/api/orders/verify',paymentData, {headers:{'Authorization':`Bearer ${token}`}});
+            const response = await axios.post(`${API_URL}/orders/verify`,paymentData, {headers:{'Authorization':`Bearer ${token}`}});
         if(response.status === 200) {
             toast.success('Payment successful.');
             await clearCart();
@@ -126,7 +127,7 @@ const PlaceOrder = () => {
 
     const deleteOrder = async (orderId) => {
         try {
-            await axios.delete("http://localhost:8080/api/orders/" + orderId, {headers:{'Authorization':`Bearer ${token}`}});           
+            await axios.delete(`${API_URL}/orders/` + orderId, {headers:{'Authorization':`Bearer ${token}`}});           
         } catch (error) {
             toast.error("Something went wrong . Contact Support.");
         }
@@ -134,7 +135,7 @@ const PlaceOrder = () => {
 
     const clearCart = async () => {
         try {
-            await axios.delete("http://localhost:8080/api/cart" , {headers:{'Authorization':`Bearer ${token}`}});
+            await axios.delete(`${API_URL}/cart` , {headers:{'Authorization':`Bearer ${token}`}});
             setQuantities({});
         } catch (error) {
             toast.error("Error while clearing the cart.");
