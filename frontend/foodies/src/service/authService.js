@@ -1,5 +1,5 @@
 import axios from "axios";
- const backendUri = process.env.REACT_APP_BACKEND_URL;
+ const backendUri = import.meta.env.VITE_APP_BACKEND_URL;
 export const API_URL = `${backendUri}/api`;
 
 export const registerUser = async (data) =>{
