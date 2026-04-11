@@ -2,7 +2,6 @@ package in.putin.foodiesapi.config;
 
 import java.util.List;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,9 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import in.putin.foodiesapi.filters.JwtAuthenticationFilter;
 import in.putin.foodiesapi.service.AppUserDetailsService;
@@ -32,61 +31,71 @@ public class SecurityConfig {
 
     private final AppUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-        .csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(auth -> auth
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-            // ✅ VERY IMPORTANT (fixes 403 on Render)
-            .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+        http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ CORS FIX
+            .csrf(AbstractHttpConfigurer::disable)
 
-            .requestMatchers(
-                "/api/register",
-                "/api/login",
-                "/api/foods/**",
-                "/api/orders/all",
-                "/api/orders/status/**"
-            ).permitAll()
+            .authorizeHttpRequests(auth -> auth
 
-            .anyRequest().authenticated()
-        )
-        .sessionManagement(session ->
-            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        )
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                // ✅ VERY IMPORTANT (fixes 403 on Render)
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
 
-    return http.build();
-}
+                .requestMatchers(
+                    "/api/register",
+                    "/api/login",
+                    "/api/foods/**",
+                    "/api/orders/all",
+                    "/api/orders/status/**"
+                ).permitAll()
+
+                .anyRequest().authenticated()
+            )
+
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-
     }
+
     @Bean
-    public CorsFilter corsFilter(){
-        return new CorsFilter(corsConfigurationSource());
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowedOriginPatterns(List.of(
+            "https://cravora-food-delivery-app-jcgz.vercel.app",
+            "https://cravora-food-delivery-app.vercel.app"
+        )); // allow all origins
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization"));
+        config.setAllowCredentials(false);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
     }
-    private UrlBasedCorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration config = new CorsConfiguration();
 
-    config.setAllowedOriginPatterns(List.of("*")); // ✅ IMPORTANT
-    config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS","PATCH"));
-    config.setAllowedHeaders(List.of("*"));
-    config.setAllowCredentials(true);
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", config);
-
-    return source;
-}
     @Bean
-    public AuthenticationManager authenticationManager(){
-           DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-           authProvider.setUserDetailsService(userDetailsService);
-           authProvider.setPasswordEncoder(passwordEncoder());
-           return new ProviderManager(authProvider);
+    public AuthenticationManager authenticationManager() {
 
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return new ProviderManager(authProvider);
     }
-
 }
