@@ -1,7 +1,7 @@
 import React, {  useEffect, useState } from 'react';
 import axios from 'axios';
 import { assets } from '../../assets/assets';
-import { API_URL } from '../../../../foodies/src/service/authService';
+import { API_URL } from '../../services/foodService';
 
 const Orders = () => {
     const [data , setData] = useState([]);
