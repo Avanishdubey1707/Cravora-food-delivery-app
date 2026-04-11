@@ -1,6 +1,6 @@
 import axios from "axios";
-// import { API_URL } from "../../../foodies/src/service/authService";
-export const API_URL = import.meta.env.VITE_BACKEND_URL;
+const bakUri = import.meta.env.VITE_BACKEND_URL
+export const API_URL = `${bakUri}/api`
 const FOOD_API_URL=`${API_URL}/foods`;
 export const addFood=async(foodData,image)=>{
     const formData = new FormData();
