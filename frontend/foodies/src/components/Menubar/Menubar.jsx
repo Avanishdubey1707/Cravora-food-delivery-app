@@ -3,6 +3,7 @@ import './Menubar.css';
 import { assets } from '../../assets/assets';
 import { Link, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
+import { ShoppingCart } from 'lucide-react';
 
 
 const Menubar = () => {
@@ -38,11 +39,18 @@ const Menubar = () => {
                             <Link className={active === 'contact-us' ? "nav-link fw-bold active" : "nav-link"} to="/contact" onClick={() => setActive('contact-us')}
                             >Contact us</Link>
                         </li>
+                        <li className="nav-item">
+                        </li>
+                        <li className="nav-item">
+                            <Link className={active === 'admin-us' ? "nav-link fw-bold active" : "nav-link"} to="https://cravora-food-delivery-app-jcgz.vercel.app/" onClick={() => setActive('admin-us')}
+                            >Admin Panel</Link>
+                        </li>
                     </ul>
                     <div className="d-flex align-items-center gap-4">
                         <Link to={`/cart`}>
                             <div className="position-relative">
-                                <img src={assets.cart} alt="" height={32} width={32} className='position-relative' />
+                                {/* <img src={assets.cart} alt="" height={32} width={32} className='position-relative' /> */}
+                                <ShoppingCart />
                                 <span className='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning'>{uniqueItemInCart}</span>
                             </div>
                         </Link>

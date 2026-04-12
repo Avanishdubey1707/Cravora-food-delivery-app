@@ -1,5 +1,5 @@
 import axios from "axios";
- const backendUri = import.meta.env.VITE_APP_BACKEND_URL;
+const backendUri = import.meta.env.VITE_APP_BACKEND_URL;
 export const API_URL = `${backendUri}/api`;
 
 export const registerUser = async (data) =>{
@@ -17,6 +17,7 @@ export const registerUser = async (data) =>{
 export const login = async (data) =>{
     try{
         const response = await axios.post(
+            // API_URL+"/login",
             API_URL+"/login",
             data
         );

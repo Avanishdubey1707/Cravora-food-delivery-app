@@ -9,8 +9,11 @@ const Cart = () => {
     const {foodList,increaseQty,decreaseQty,quantities ,removeFromCart} = useContext(StoreContext);
 
     // Cart items
-    const cartItems = foodList.filter((food) => quantities[food.id]>0);
-     
+    // const cartItems = foodList.filter((food) => quantities[food.id]>0);
+    const cartItems = Array.isArray(foodList)
+  ? foodList.filter(food => (quantities?.[food.id] || 0) > 0)
+  : []; 
+
     // calculations
     const {subtotal,shipping,tax,total} = calculateCartTotals(
            cartItems,

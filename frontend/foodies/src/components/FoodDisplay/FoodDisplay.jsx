@@ -4,10 +4,20 @@ import FoodItem from '../FoodItem/FoodItem';
 
 const FoodDisplay = ({category,searchText}) => {
   const { foodList } = useContext(StoreContext);
-  const filteredFoods = foodList.filter(food =>(
-    (category === 'All' || food.category === category) &&
-     food.name.toLowerCase().includes(searchText.toLowerCase())
-  ));
+
+  const filteredFoods = Array.isArray(foodList)
+  ? foodList.filter(food =>
+      (category === "All" || food.category === category) &&
+      food.name.toLowerCase().includes(searchText.toLowerCase())
+    )
+  : [];
+
+  // const filteredFoods = foodList.filter(food =>(
+    
+  //   (category === 'All' || food.category === category) &&
+  //    food.name.toLowerCase().includes(searchText.toLowerCase())
+  // ));
+
   return (
     <div className="container">
       <div className="row">
